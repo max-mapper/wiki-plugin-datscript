@@ -1,0 +1,37 @@
+{
+  "title": "About Datscript Plugin",
+  "story": [
+  {
+    "type": "paragraph",
+    "id": "f96470960749c495",
+    "text": "Here we describe the purpose of the plugin and include a sample."
+  },
+  {
+    "type": "datscript",
+    "id": "fdfdb8d8dd71a28f",
+    "text": "This is text in the new plugin. You can *double-click* to edit it too."
+  }
+],
+  "journal": [
+  {
+    "type": "create",
+    "item": {
+      "title": "About Datscript Plugin",
+      "story": [
+  {
+    "type": "paragraph",
+    "id": "f96470960749c495",
+    "text": "Here we describe the purpose of the plugin and include a sample."
+  },
+  {
+    "type": "datscript",
+    "id": "fdfdb8d8dd71a28f",
+    "text": "This is text in the new plugin. You can *double-click* to edit it too."
+  }
+]
+    },
+    "date": 1433443268000,
+    "certificate": "from mkplugin.sh"
+  }
+]
+}
