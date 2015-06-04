@@ -9,16 +9,20 @@
     "plugin"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "you@example.com",
-    "url": "http://example.com"
+    "name": "Max Ogden",
+    "email": "max@maxogden.com",
+    "url": "http://maxogden.com"
   },
-  "contributors": [],
+  "contributors": [{
+    "name": "Ward Cunningham",
+    "email": "ward@c2.com",
+    "url": "http://ward.fed.wiki.org"
+  }],
   "scripts": {
-    "test": ""
+    "start": "watchify client/datscript-src.js -o client/datscript.js -v"
   },
   "devDependencies": {
-
+    "watchify": "^3.2.1"
   },
   "license": "MIT",
   "repository": {
@@ -32,7 +36,6 @@
     "node": "0.10"
   },
   "dependencies": {
-    "coffee-script": "^1.9.3",
     "hackfile": "^4.0.0",
     "ndjson": "^1.3.0",
     "pump": "^1.0.0",
