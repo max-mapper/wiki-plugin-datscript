@@ -23,11 +23,13 @@ module.exports = {
       sockets.push(duplex)
       
       duplex.on('data', function (obj) {
-        if (jobs[obj.id] && obj.gasket)
-          return duplex.write({error: true, id: obj.id, message: 'Job already running'})
-        
+        console.error('got data from client', JSON.stringify(obj))
+        // if (jobs[obj.id] && obj.gasket)
+        //   return duplex.write({error: true, id: obj.id, message: 'Job already running'})
+        //
         var pipelines = gasket(obj.gasket)
         var stringifier = through.obj(function (buff, enc, next) {
+          console.error('pipeline debug', buff.toString())
           next(null, {output: buff.toString()})
         })
         pipelines.run('example').pipe(stringifier).pipe(duplex, {end: false})

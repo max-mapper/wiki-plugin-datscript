@@ -25,6 +25,7 @@ pump(socket, parse)
 var duplex = duplexify.obj(serialize, parse)
 
 duplex.on('data', function (obj) {
+  console.log('got response', obj)
   currentElement.find('.output').append(obj.output)
 })
 
@@ -54,9 +55,9 @@ function emit ($item, item) {
     // END HACK
     
     latestScript = datscriptFixed
+    console.log('writing to socket', datscriptFixed)
     duplex.write({id: id, gasket: datscriptFixed})
     currentElement.find('.output').text("")
-    
   } catch (e) {
     output = expand(item.text)
     output += '\n\n<span style="background-color:#e6d6d6;">' + e.message + '</span>'
