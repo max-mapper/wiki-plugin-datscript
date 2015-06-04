@@ -2,6 +2,11 @@ var websocket = require('websocket-stream')
 var ndjson = require('ndjson')
 var pump = require('pump')
 var duplexify = require('duplexify')
+var gasket = require('gasket')
+var through = require('through2')
+
+var sockets = []
+var jobs = {}
 
 module.exports = {
   startServer: function (params) {
@@ -14,10 +19,18 @@ module.exports = {
       pump(serialize, socket)
       
       var duplex = duplexify.obj(serialize, parse)
+      
+      sockets.push(duplex)
+      
       duplex.on('data', function (obj) {
-        console.log('got data', obj)
-        obj.hello = 'from server'
-        duplex.write(obj)
+        if (jobs[obj.id] && obj.gasket)
+          return duplex.write({error: true, id: obj.id, message: 'Job already running'})
+        
+        var pipelines = gasket(obj.gasket)
+        var stringifier = through.obj(function (buff, enc, next) {
+          next(null, {output: buff.toString()})
+        })
+        pipelines.run('example').pipe(stringifier).pipe(duplex, {end: false})
       })
     }
     
