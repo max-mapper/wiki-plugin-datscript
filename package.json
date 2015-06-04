@@ -13,11 +13,13 @@
     "email": "max@maxogden.com",
     "url": "http://maxogden.com"
   },
-  "contributors": [{
-    "name": "Ward Cunningham",
-    "email": "ward@c2.com",
-    "url": "http://ward.fed.wiki.org"
-  }],
+  "contributors": [
+    {
+      "name": "Ward Cunningham",
+      "email": "ward@c2.com",
+      "url": "http://ward.fed.wiki.org"
+    }
+  ],
   "scripts": {
     "start": "watchify client/datscript-src.js -o client/datscript.js -v"
   },
@@ -36,6 +38,7 @@
     "node": "0.10"
   },
   "dependencies": {
+    "duplexify": "^3.4.1",
     "hackfile": "^4.0.0",
     "ndjson": "^1.3.0",
     "pump": "^1.0.0",
