@@ -15,7 +15,7 @@ module.exports = {
     function handle (socket) {
       var parse = ndjson.parse()
       var serialize = ndjson.serialize()
-      pump(socket, parse)
+      pump(socket, parse) 
       pump(serialize, socket)
       
       var duplex = duplexify.obj(serialize, parse)
@@ -32,7 +32,12 @@ module.exports = {
           console.error('pipeline debug', buff.toString())
           next(null, {output: buff.toString()})
         })
-        pipelines.run('example').pipe(stringifier).pipe(duplex, {end: false})
+        try {
+          pipelines.run('main').pipe(stringifier).pipe(duplex, {end: false})
+        } catch (e) {
+          console.error('pipeline failure', e)
+          duplex.write({error: e.message})
+        }
       })
     }
     

@@ -5,7 +5,7 @@ var ndjson = require('ndjson')
 var pump = require('pump')
 var duplexify = require('duplexify')
 
-var latestScript, currentElement
+var latestScript, currentElement, response = []
 
 var socket = websocket('ws://' + window.location.host + '/plugin/datscript')
 var serialize = ndjson.serialize()
@@ -25,8 +25,21 @@ pump(socket, parse)
 var duplex = duplexify.obj(serialize, parse)
 
 duplex.on('data', function (obj) {
-  console.log('got response', obj)
-  currentElement.find('.output').append(obj.output)
+  try {
+    obj.output.split('\n').forEach(function (line) {
+      if (!line.length) return
+      response.push(JSON.parse(line))
+    })
+  } catch (e) {
+    console.error('could not split data')
+  }
+  console.log('got response', obj, response)
+  var output = currentElement.find('.output-container p')
+  if (!output.length) {
+    output = $('<p style="white-space: pre; border: 1px solid #ddd; padding: 5px; background-color: #fafafa; font-size: 13px; overflow: auto;"></p>')
+    currentElement.find('.output-container').html(output)
+  }
+  currentElement.find('.output-container p').append(obj.output)
 })
 
 window.duplex = duplex
@@ -56,16 +69,21 @@ function emit ($item, item) {
     
     latestScript = datscriptFixed
     console.log('writing to socket', datscriptFixed)
+    response = []
     duplex.write({id: id, gasket: datscriptFixed})
     currentElement.find('.output').text("")
   } catch (e) {
     output = expand(item.text)
     output += '\n\n<span style="background-color:#e6d6d6;">' + e.message + '</span>'
   }
-  $item.append("<div style=\"background-color:#eee;padding:15px;\"><pre style=\"word-wrap: break-word;\">" + output + "</pre><p class=\"caption\"></p><p class=\"output\"></p></div>")
+  $item.append("<div style=\"background-color:#eee;padding:15px;\"><pre style=\"word-wrap: break-word;\">" + output + "</pre><p class=\"caption\"></p><p class=\"output-container\"></p></div>")
 }
 
 function bind ($item, item) {
+  $item.addClass('sequence-source')
+  $item.get(0).getSequenceData = function () {
+    return response
+  }
   return $item.dblclick(function(e) {
     if (e.shiftKey) {
       var rawScript = '<pre style=\"background-color:#eee;padding:15px;\">'
