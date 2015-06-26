@@ -29,10 +29,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fedwiki/wiki-plugin-datscript.git"
+    "url": "https://github.com/maxogden/wiki-plugin-datscript.git"
   },
   "bugs": {
-    "url": "https://github.com/fedwiki/wiki-plugin-datscript/issues"
+    "url": "https://github.com/maxogden/wiki-plugin-datscript/issues"
   },
   "engines": {
     "node": "0.10"
